@@ -1,30 +1,42 @@
 class Todo {
-    constructor(data, selector) {
-      this._data = data;
-      this._templateElement = document.querySelector(selector);
-   }
+  constructor(data, selector) {
+    this._data = data;
+    this._templateElement = document.querySelector(selector);
+  }
 
+  _setEventListeners() {
+    this._todoDeleteBtn.addEventListener("click", () => {
+      this._todoElement.remove();
+    });
 
-getView() {
-   this._todoElement = this._templateElement.content
-  .querySelector(".todo")
-   .cloneNode(true);
+    this._todoCheckboxEl.addEventListener("change", () => {
+      this._data.completed = !this._data.completed;
+    });
+  }
 
+  _generateCheckboxEl() {
+    this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
+    this._todoLabel = this._todoElement.querySelector(".todo__label");
+    this._todoCheckboxEl.checked = this._data.completed;
+    this._todoCheckboxEl.id = `todo-${this._data.id}`;
+    this._todoLabel.setAttribute("for", `todo-${this._data.id}`);
+  }
 
-const todoNameEl = this._todoElement.querySelector(".todo__name");
- const todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
- const todoLabel = this._todoElement.querySelector(".todo__label");
- const todoDate = this._todoElement.querySelector(".todo__date");
-const todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
+  getView() {
+    this._todoElement = this._templateElement.content
+      .querySelector(".todo")
+      .cloneNode(true);
 
-todoNameEl.textContent = this._data.name;
-todoCheckboxEl.checked = this._data.completed;
+    const todoNameEl = this._todoElement.querySelector(".todo__name");
+    const todoDate = this._todoElement.querySelector(".todo__date");
+    this._todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
 
-todoCheckboxEl.id = `todo-${this._data.id}`;
-todoLabel.setAttribute("for", `todo-${this._data.id}`);
+    todoNameEl.textContent = this._data.name;
 
-return this._todoElement;
-   }
+    this._generateCheckboxEl();
+    this._setEventListeners();
 
+    return this._todoElement;
+  }
 }
 export default Todo;
