@@ -75,9 +75,14 @@ class FormValidator {
     this._setEventListeners();
   }
 
-  disableSubmitAndReset() {
+  resetValidation() {
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement);
+    });
+
     this._buttonElement.classList.add(this._inactiveButtonClass);
     this._buttonElement.disabled = true;
+
     this._formEl.reset();
   }
 }
