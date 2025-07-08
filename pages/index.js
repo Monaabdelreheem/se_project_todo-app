@@ -1,3 +1,4 @@
+import FormValidator from "../components/FormValidator.js";
 import { v4 as uuidv4 } from "http://jspm.dev/uuid";
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
@@ -21,8 +22,6 @@ const generateTodo = (data) => {
   const todo = new Todo(data, "#todo-template");
   const todoElement = todo.getView();
   return todoElement;
-
-  
 };
 
 addTodoButton.addEventListener("click", () => {
@@ -53,3 +52,6 @@ initialTodos.forEach((item) => {
   const todo = generateTodo(item);
   todosList.append(todo);
 });
+
+const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
+newTodoValidator.enableValidation();
