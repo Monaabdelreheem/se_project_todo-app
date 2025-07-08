@@ -25,7 +25,8 @@ Users can add new tasks, mark them as completed, set optional due dates, and rem
 
 This project is deployed on GitHub Pages:
 
-- 👉 ADD LINK HERE
+- 👉 [**View the Live ToDo App Here**](https://Monaabdelreheem.github.io/se_project_todo-app/)
+
 
 🙌 Author
 Built with ❤️ by Mona Abdelreheem.
