@@ -27,6 +27,5 @@ This project is deployed on GitHub Pages:
 
 - 👉 [**View the Live ToDo App Here**](https://Monaabdelreheem.github.io/se_project_todo-app/)
 
-
 🙌 Author
 Built with ❤️ by Mona Abdelreheem.
