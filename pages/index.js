@@ -4,7 +4,7 @@ import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
-const addTodoForm = addTodoPopup.querySelector(".popup__form");
+const addTodoForm = document.forms["add-todo-form"];
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
 const todosList = document.querySelector(".todos__list");
 const counterText = document.querySelector(".counter__text");
@@ -22,6 +22,11 @@ const generateTodo = (data) => {
   const todo = new Todo(data, "#todo-template", updateCounter);
   const todoElement = todo.getView();
   return todoElement;
+};
+
+const renderTodo = (item) => {
+  const todo = generateTodo(item);
+  todosList.append(todo);
 };
 
 addTodoButton.addEventListener("click", () => {
@@ -43,8 +48,7 @@ addTodoForm.addEventListener("submit", (evt) => {
 
   const id = uuidv4();
   const values = { name, date: dateInput, id };
-  const todo = generateTodo(values);
-  todosList.append(todo);
+  renderTodo(values);
   updateCounter();
   closeModal(addTodoPopup);
   newTodoValidator.resetValidation();
@@ -61,8 +65,7 @@ function updateCounter() {
 }
 
 initialTodos.forEach((item) => {
-  const todo = generateTodo(item);
-  todosList.append(todo);
+  renderTodo(item);
 });
 
 updateCounter();
