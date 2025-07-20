@@ -4,14 +4,23 @@ import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import Section from "../components/Section.js";
+import PopupWithForm from "../components/PopupWithForm.js";
 
 //constants for DOM elements
 const addTodoButton = document.querySelector(".button_action_add");
-const addTodoPopup = document.querySelector("#add-todo-popup");
+const addTodoPopupEl = document.querySelector("#add-todo-popup");
 const addTodoForm = document.forms["add-todo-form"];
-const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
+const addTodoCloseBtn = addTodoPopupEl.querySelector(".popup__close");
 const todosList = document.querySelector(".todos__list");
 const counterText = document.querySelector(".counter__text");
+
+// Create a new PopupWithForm instance
+const addTodoPopup = new PopupWithForm({
+  popupSelector: "#add-todo-popup", 
+handleFormSubmit: ()=> {},
+
+});
+addTodoPopup.setEventListeners(); 
 
 // Function to generate a Todo element from data
 const generateTodo = (data) => {
@@ -31,23 +40,22 @@ const section = new Section({
 section.renderItems();
 
 // Function to open and close modals
-const openModal = (modal) => {
-  modal.classList.add("popup_visible");
-};
+// const openModal = (modal) => {
+//   modal.classList.add("popup_visible");
+// };
 
-const closeModal = (modal) => {
-  modal.classList.remove("popup_visible");
-};
+// const closeModal = (modal) => {
+//   modal.classList.remove("popup_visible");
+// };
 
 
 // Event listeners for adding a new todo
 addTodoButton.addEventListener("click", () => {
-  openModal(addTodoPopup);
+  addTodoPopup.open();
+  addTodoForm.reset(); // Reset the form fields
 });
 
-addTodoCloseBtn.addEventListener("click", () => {
-  closeModal(addTodoPopup);
-});
+
 
 addTodoForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
@@ -65,7 +73,8 @@ addTodoForm.addEventListener("submit", (evt) => {
   // const todoElement = todo.getView();
   section.addItem(generateTodo(values));
   updateCounter();
-  closeModal(addTodoPopup);
+  addTodoPopup.close();
+  addTodoForm.reset(); // Reset the form fields after submission
   newTodoValidator.resetValidation();
 });
 
