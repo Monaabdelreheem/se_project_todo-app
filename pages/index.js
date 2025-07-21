@@ -17,9 +17,28 @@ const counterText = document.querySelector(".counter__text");
 // Create a new PopupWithForm instance
 const addTodoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup", 
-handleFormSubmit: ()=> {},
+handleFormSubmit: (inputValues)=> {
+    const name = inputValues.name;
+  const dateInput = inputValues.date;
 
-});
+  // Create a date object and adjust for timezone
+  const date = new Date(dateInput);
+  date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+  const id = uuidv4();
+  const values = { name, date: dateInput, id };
+   // create a new Todo instance
+  // const todo = new Todo(values, "#todo-template", updateCounter);
+  // const todoElement = todo.getView();
+  section.addItem(generateTodo(values));
+  updateCounter();
+  addTodoPopup.close();
+  addTodoForm.reset(); // Reset the form fields after submission
+  newTodoValidator.resetValidation();
+}
+}
+); 
+
+
 addTodoPopup.setEventListeners(); 
 
 // Function to generate a Todo element from data
@@ -57,26 +76,9 @@ addTodoButton.addEventListener("click", () => {
 
 
 
-addTodoForm.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-  const name = evt.target.name.value;
-  const dateInput = evt.target.date.value;
+// addTodoForm.addEventListener("submit", (evt) => {
+//   evt.preventDefault();
 
-
-  // Create a date object and adjust for timezone
-  const date = new Date(dateInput);
-  date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-  const id = uuidv4();
-  const values = { name, date: dateInput, id };
-   // create a new Todo instance
-  // const todo = new Todo(values, "#todo-template", updateCounter);
-  // const todoElement = todo.getView();
-  section.addItem(generateTodo(values));
-  updateCounter();
-  addTodoPopup.close();
-  addTodoForm.reset(); // Reset the form fields after submission
-  newTodoValidator.resetValidation();
-});
 
 // Function to update the counter text
 function updateCounter() {
