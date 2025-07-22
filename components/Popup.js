@@ -25,8 +25,8 @@ this._popupCloseBtn = this._popupElement.querySelector(".popup__close");
         if (evt.target === this._popupElement || evt.target === this._popupCloseBtn) {
             this.close();
         }
-    });
-      
+    })
+    
 }
 }
 

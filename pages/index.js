@@ -5,6 +5,7 @@ import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import TodoCounter from "../components/TodoCounter.js";
 
 //constants for DOM elements
 const addTodoButton = document.querySelector(".button_action_add");
@@ -13,6 +14,7 @@ const addTodoForm = document.forms["add-todo-form"];
 const addTodoCloseBtn = addTodoPopupEl.querySelector(".popup__close");
 const todosList = document.querySelector(".todos__list");
 const counterText = document.querySelector(".counter__text");
+const todoCounter = new TodoCounter(initialTodos, ".counter__text");
 
 // Create a new PopupWithForm instance
 const addTodoPopup = new PopupWithForm({
@@ -26,13 +28,10 @@ handleFormSubmit: (inputValues)=> {
   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
   const id = uuidv4();
   const values = { name, date: dateInput, id };
-   // create a new Todo instance
-  // const todo = new Todo(values, "#todo-template", updateCounter);
-  // const todoElement = todo.getView();
   section.addItem(generateTodo(values));
-  updateCounter();
+  todoCounter.updateTotal(true);
   addTodoPopup.close();
-  addTodoForm.reset(); // Reset the form fields after submission
+  addTodoForm.reset(); 
   newTodoValidator.resetValidation();
 }
 }
@@ -41,9 +40,22 @@ handleFormSubmit: (inputValues)=> {
 
 addTodoPopup.setEventListeners(); 
 
+function handleCheck(completed) {
+  // Update the counter when a checkbox is checked or unchecked
+  todoCounter.updateCompleted(completed);
+
+}
+
+function handleDelete(completed) {
+  if (completed) {
+    todoCounter.updateTotal(false);
+    
+  }
+}
+
 // Function to generate a Todo element from data
 const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template", updateCounter);
+  const todo = new Todo(data, "#todo-template", handleCheck, handleDelete);
   const todoElement = todo.getView();
   return todoElement;
 };
@@ -58,15 +70,6 @@ const section = new Section({
 // Render initial todos
 section.renderItems();
 
-// Function to open and close modals
-// const openModal = (modal) => {
-//   modal.classList.add("popup_visible");
-// };
-
-// const closeModal = (modal) => {
-//   modal.classList.remove("popup_visible");
-// };
-
 
 // Event listeners for adding a new todo
 addTodoButton.addEventListener("click", () => {
@@ -75,25 +78,13 @@ addTodoButton.addEventListener("click", () => {
 });
 
 
-
-// addTodoForm.addEventListener("submit", (evt) => {
-//   evt.preventDefault();
-
-
-// Function to update the counter text
-function updateCounter() {
-  const allTodos = document.querySelectorAll(".todo");
-  const completedTodos = document.querySelectorAll(".todo.todo_completed");
-
-  const total = allTodos.length;
-  const completed = completedTodos.length;
-
-  counterText.textContent = `${completed} out of ${total} completed`;
-}
-
-// Initial counter update
-updateCounter();
-
 // Enable form validation
 const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
 newTodoValidator.enableValidation();
+
+
+
+
+
+
+
