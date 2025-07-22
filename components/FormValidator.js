@@ -1,6 +1,5 @@
 class FormValidator {
   constructor(settings, formEl) {
-    this._formSelector = settings.formSelector;
     this._inputSelector = settings.inputSelector;
     this._submitButtonSelector = settings.submitButtonSelector;
     this._errorClass = settings.errorClass;
